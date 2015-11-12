@@ -1,0 +1,118 @@
+\documentclass[12pt]{article}
+
+\usepackage{amssymb,amsmath}
+\usepackage{enumerate}
+\usepackage{float}
+\usepackage{verbatim}
+\usepackage{setspace}
+\usepackage{multicol}
+
+%% LaTeX margin settings:
+  \setlength{\textwidth}{7.0in}
+\setlength{\textheight}{9in}
+\setlength{\oddsidemargin}{-.5in}
+\setlength{\evensidemargin}{0in}
+\setlength{\topmargin}{-1.5cm}
+
+%% tell knitr to use smaller font for code chunks
+\def\fs{\footnotesize}
+\def\R{{\sf R}}
+\newcommand{\bfbeta}{\mbox{\boldmath $\beta$}}
+\newcommand{\bfD}{\mbox{\boldmath $D$}}
+\newcommand{\bfL}{\mbox{\boldmath $L$}}
+\newcommand{\bfR}{\mbox{\boldmath $R$}}
+\newcommand{\bfmu}{\mbox{\boldmath $\mu$}}
+\newcommand{\bfv}{\mbox{\boldmath $V$}}
+\newcommand{\bfX}{\mbox{\boldmath $X$}}
+\newcommand{\bfy}{\mbox{\boldmath $y$}}
+\newcommand{\bfb}{\mbox{\boldmath $b$}}
+\newcommand{\ytil}{\mbox{$\tilde{y}$}}
+
+\begin{document}
+
+<<setup, include=FALSE, cache=FALSE>>=
+  opts_chunk$set(fig.width=5, fig.height=4, out.width='.5\\linewidth', dev='pdf', concordance=TRUE, size='footnotesize')
+options(replace.assign=TRUE,width=72, digits = 3, 
+        show.signif.stars = FALSE)
+@
+  
+  
+  \begin{center}
+\large{Sampling: HW7} \\
+Leslie Gains-Germain
+\end{center}
+
+\begin{doublespacing}
+
+\begin{enumerate}
+
+\item The ratio $B$ represents the true mean number of board feet found by measuring for every one board foot found using the eyeball estimate in the $45$ acre timber stand. {\it Another interpretation: The ratio $B$ represents the true average ratio of measured volume to eyeballed volume of timber in the $45$-acre timber stand.} If this ratio is close to $1$, the timber cruiser is very good at estimating plot volume by eyeball. $t_y$ is the true total merchantable volume in the $45$ acre timber stand in board feet, found by the measuring technique.
+
+\item The estimate of $B$ is $1.0458$. My work is shown in the R code below.
+
+<<data, echo=FALSE>>=
+data <- read.table("~/Documents/Stat446/homework/HO7/data.txt", header=FALSE)
+names(data) <- c("x", "y")
+@
+
+<<estimate, echo=TRUE>>=
+Bhat <- with(data, mean(y)/mean(x))
+@
+
+\item The ratio estimate for $t_y$ is $116085$ board feet. 
+
+<<totalest, echo=TRUE>>=
+N <- 450
+t.yhat <- Bhat*mean(data$x)*N
+@
+
+\item Because $\bar{x}_U$ is unknown, the estimated variance of $\hat{t}_{yr}$ is approximately $1221314$. My work is shown below.
+
+<<var, echo=TRUE>>=
+n <- 30
+s.e <- sqrt(1/(n-1)*sum((data$y-(Bhat*data$x))^2))
+var.t.yhat <- N*(N-n)*s.e^2/n
+@
+
+\item An approximate $95\%$ t-based confidence interval for $B$ is $1.0254$ to $1.0662$. My work is shown below.
+
+<<ci, echo=TRUE>>=
+tstar <- qt(0.975, 29)
+var.bhat <- (N-n)/(N*mean(data$x)^2)*s.e^2/n
+ci.l <- Bhat-tstar*sqrt(var.bhat)
+ci.h <- Bhat+tstar*sqrt(var.bhat)
+@
+
+\item For every one board foot estimated by eyeball, we are $95\%$ confident that the true mean number of board feet found by measuring is between $1.0254$ and $1.0662$ board feet. {\it Another interpretation: We are $95\%$ confident that the measured volume is between $2.54\%$ and $6.62\%$ larger than the eyeballed volume on average.} 
+
+\item An approximate $95\%$ t-based confidence interval for $t_y$ is $113824.8$ to $118345.2$. My work is shown below.
+
+<<totalci, echo=TRUE>>=
+ci <- c(t.yhat - tstar*sqrt(var.t.yhat), t.yhat + tstar*sqrt(var.t.yhat))
+@
+
+\item We are $95\%$ confident that the true total merchantable volume in the $45$ acre timber stand is between $113824.8$ and $118345.2$ board feet.
+
+\item Yes, I would expect ratio estimation to be an improvement over estimation based on the SRS of y-values only because the plot shows a strong positive linear relationship between the eyeballed plot volume and the measured plot volume, and the relationship passes through the origin.
+
+\item If the point $(300, 305)$ is removed, the new estimate of $t_y$ is $115355.2$ board feet, with a standard error of $1140.12$. 
+
+<<remove, echo=TRUE>>=
+data.remove <- data[-14,]
+Bhat.remove <- with(data.remove, mean(y)/mean(x))
+t.yhat.remove <- Bhat.remove*mean(data.remove$x)*N
+
+n.new <- 29
+s.e.remove <- sqrt(1/(n.new-1)*sum((data.remove$y-(Bhat.remove*data.remove$x))^2))
+var.t.yhat.remove <- N*(N-n.new)*s.e.remove^2/n.new
+se.t.yhat.remove <- sqrt(var.t.yhat.remove)
+@
+
+\item See attached handwritten sheet.
+
+\end{enumerate}
+
+\end{doublespacing}
+
+
+\end{document}
