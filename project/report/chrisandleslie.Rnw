@@ -1,0 +1,402 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{float}
+
+\setlength{\textwidth}{6.5in}
+\setlength{\textheight}{9in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\topmargin}{-1.5cm}
+\setlength{\maxwidth}{6.5in}
+
+\newcommand{\bfbeta}{\mbox{\boldmath $\beta$}}
+
+\title{\vspace{-2.0cm}Using Simulation to Estimate Inclusion Probabilities}
+\author{Chris Clark and Leslie Gains-Germain}
+\date{Fall 2015}
+
+\begin{document}
+<<setup, include=FALSE, cache=FALSE,echo=FALSE>>=
+require(knitr)
+opts_chunk$set(fig.width = 10, fig.height = 4, out.width = '\\linewidth',
+               out.height = '0.4\\linewidth', dev = 'pdf',
+               concordance = TRUE,
+               tidy.opts = list(width.cutoff = 60, keep.blank.line=FALSE),
+               size = 'footnotesize')
+options(replace.assign = TRUE, width = 112, digits = 3, max.print = '202',
+        show.signif.stars = FALSE)
+knit_theme$set('print')
+
+require(xtable)
+#require(foreign)
+#require(arm)
+require(car)
+require(lattice)
+require(sampling)
+require(dplyr)
+@
+
+
+
+\maketitle
+\tableofcontents
+
+\newpage
+
+\section{Introduction}
+
+
+\section{Organizing Data}
+
+<<readindata, echo=FALSE>>=
+#leslie's working directory
+setwd("~/Documents/Stat446/project/data")
+
+#Chris- add your working directory here
+
+#read in data of streams, reaches, and reach lengths (this was built in previous code)
+reach.dat <- read.csv("reachdat.csv")
+@
+
+<<addtodata, echo=FALSE>>=
+
+#add a column for stream ID
+reach.dat$streamID <- as.numeric(reach.dat$stream)
+
+#add a column for reach ID
+reach.dat$reachID <- 1:109
+
+#add probabilities of selecting each reach, within each stream (prop to length)
+
+length.totals <- reach.dat %>%
+  group_by(stream) %>%
+  summarise(totals = sum(length))
+
+reach.dat <- merge(reach.dat, length.totals, by  = "stream")
+
+reach.dat$length.probs <- with(reach.dat, length/totals)
+
+#reorder columns (this just makes me happier)
+reach.dat <- reach.dat[, c("stream","streamID","reach","reachID", "length", 
+                           "length.probs", "totals")]
+@
+
+
+\section{Drawing Stratified Random Samples with Unequal Probability}
+
+
+<<test, include=FALSE>>=
+nsim <- 10000
+
+#this function draws a unequal probability sample within each stream
+sample.fun.pi <- function(stream.no, n.vec){
+  sample <-
+    #ifelse statement to deal with the streams that have only 1 reach
+    ifelse(length(reach.dat[reach.dat$streamID==stream.no, "reachID"]) == 1,
+      #this line says to sample that one reach, if the stream only has one reach
+      reach.dat[which(reach.dat$streamID==stream.no), "reachID"],
+      #if more than one reach, draw a uneq prob sample of size n.vec
+      list(sample(subset(reach.dat, streamID == stream.no)$reachID, 
+         size = n.vec[stream.no], 
+         #probabilities proportional to length
+         prob = reach.dat[reach.dat$streamID == stream.no, "length.probs"],
+         #without replacement
+         replace = FALSE)))
+  return(unlist(sample))
+}
+
+strata.uneq.pi <- function(n.vec){
+  #store nsim samples in a matrix called sample.all
+  sample.all <- matrix(NA, nrow = sum(n.vec), ncol = nsim)
+    for(i in 1:nsim){
+      #for each sample, apply the above function to all the streams
+      sample.all[, i] <- unlist(apply(cbind(1:length(unique(reach.dat$streamID))), 1, 
+                                   sample.fun.pi, n.vec))
+    }
+  return(sample.all)
+}
+@
+
+
+<<samplesizes, echo=FALSE>>=
+#define sample sizes
+n.10 <- c(2,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1)
+n.20 <- c(3,2,2,1,2,1,1,1,1,1,1,1,2,5,1,1)
+n.30 <- c(5,3,3,1,2,1,2,1,1,1,2,1,2,7,2,2)
+n.40 <- c(7,4,4,1,3,1,3,1,1,1,2,1,3,9,2,2)
+@
+
+
+<<callfunction, eval=FALSE>>=
+set.seed(303)
+
+#build a matrix of samples for every sample size
+sample.10 <- strata.uneq.pi(n.10)
+sample.10[, 1:6]
+
+sample.20 <- strata.uneq.pi(n.20)
+
+sample.30 <- strata.uneq.pi(n.30)
+
+sample.40 <- strata.uneq.pi(n.40)
+@
+
+
+<<calldat, include=FALSE>>=
+#for me, so I don't have to run simulations every time
+sample.10 <- read.csv("sample10.csv")
+sample.20 <- read.csv("sample20.csv")
+sample.30 <- read.csv("sample30.csv")
+sample.40 <- read.csv("sample40.csv")
+@
+
+
+\section{Finding Inclusion Probabilities}
+
+
+<<findpik, echo=FALSE, eval=FALSE>>=
+#these ones can take a while to run if you have a slow computer
+
+#for each sample size, calculate the inclusion probabilities for each reach
+pi.10 <- numeric(length(reach.dat$reach))
+for(i in 1:length(reach.dat$reach)) {
+  #total number of times the reach is sampled out of the total num of sims
+  pi.10[i] <- sum(sample.10==i)/nsim
+}
+
+pi.20 <- numeric(length(reach.dat$reach))
+for(i in 1:length(reach.dat$reach)) {
+  pi.20[i] <- sum(sample.20==i)/nsim
+}
+
+pi.30 <- numeric(length(reach.dat$reach))
+for(i in 1:length(reach.dat$reach)) {
+  pi.30[i] <- sum(sample.30==i)/nsim
+}
+
+pi.40 <- numeric(length(reach.dat$reach))
+for(i in 1:length(reach.dat$reach)) {
+  pi.40[i] <- sum(sample.40==i)/nsim
+}
+@
+
+<<callpidat, include=FALSE>>=
+pi.10 <- read.csv("pi10.csv")
+pi.20 <- read.csv("pi20.csv")
+pi.30 <- read.csv("pi30.csv")
+pi.40 <- read.csv("pi40.csv")
+@
+
+
+
+<<plot, echo=FALSE>>=
+#plot inclusion probabilities over reach length within each stream to make sure we sampled #with probability proportional to reach length within each stream
+
+xyplot(pi.10~length|stream, data = reach.dat)
+
+xyplot(pi.20~length|stream, data = reach.dat)
+
+xyplot(pi.30~length|stream, data = reach.dat)
+
+xyplot(pi.40~length|stream, data = reach.dat)
+@
+
+
+
+\section{How we Will Use the Inclusion Probabilities}
+
+<<simys, echo=FALSE>>=
+#simulate data
+#chris - you can input lwd or other metric of interest in here
+reach.dat$y <- rnorm(length(reach.dat$reach), 60, 10)
+
+#find number of reaches in each stream for calculating ht estimator
+num.reaches <- unlist(with(reach.dat, tapply(reach, stream, length)))
+@
+
+
+
+<<htestimates, echo=FALSE>>=
+#this function calculates the ht estimator for each simulated sample from above
+#uses the estimated inclusion probabilities
+ht.fun <- function(simnum, sample.n, pi.n){
+  #reaches that were selected in the sample
+  reach <- sample.n[, simnum]
+  #estimated inclusion probabilities for those reaches
+  pi <- pi.n[sample.n[, simnum]]
+  #y-values that were selected
+  y <- reach.dat[sample.n[, simnum], "y"]
+  #the streams that the selected reaches belong to
+  stream <- reach.dat[sample.n[, simnum], "stream"]
+  #organize into a dataframe so we can use dplyr on it
+  data <- cbind.data.frame(reach, pi, y, stream)
+  #use dplyr to calculate the ht estimates of the total and the mean
+  ht.strata <- data %>%
+    tbl_df %>%
+    group_by(stream) %>%
+    summarise(total = sum(y/pi)) %>%
+    mutate(size = num.reaches) %>%
+    mutate(mean = total/size)
+  return(ht.strata[, "mean"])
+}
+
+####Note - the below may take a long time to run. You may want to run them once and then use the write.csv() function to write them to a csv and then just call the csv each time you run this document
+
+#apply to every one of the nsim samples (for n.10)
+ht.means.10 <- data.frame(apply(cbind(1:nsim), 1, ht.fun, sample.n = sample.10, 
+                                pi.n = pi.10))
+
+#20% sample size
+ht.means.20 <- data.frame(apply(cbind(1:nsim), 1, ht.fun, sample.n = sample.20, 
+                                pi.n = pi.20))
+
+#30% sample size
+ht.means.30 <- data.frame(apply(cbind(1:nsim), 1, ht.fun, sample.n = sample.30, 
+                                pi.n = pi.30))
+
+#40\% sample size
+ht.means.40 <- data.frame(apply(cbind(1:nsim), 1, ht.fun, sample.n = sample.40, 
+                                pi.n = pi.40))
+
+#or you can do it with HTstrata function
+#I wanted to use this but couldn't figure out how to store the descriptive output
+#cat(HTstrata(y = y, pik = pi, strata = stream.strata, description = TRUE))
+@
+
+
+\section{Future Topics for Study}
+
+\section{Appendix: R Code}
+
+
+\pagebreak
+\section{References}
+%\noindent Ramsey, F.L., Schafer, D.W. (2013). {\it The Statistical Sleuth: A Course in Methods of Data Analysis, Third Edition}. Boston, MA: Brooks/Cole, Cengage Learning.\\
+
+\noindent Gelman, A. and Hill, J. (2007). {\it Data Analysis Using
+Regression and Multilevel/Hierarchical Models}. New York, NY: Cambridge
+University Press.\\
+
+%\noindent Philippi, Tom. "Topic 2(b) GRTS Spatial Sampling (for Monitoring)." GRTS Spatial Sampling (for Monitoring). Web. 17 Feb. 2015. \\
+%http://science.nature.nps.gov/im/datamgmt/statistics/r/advanced/grts.cfm. \\
+
+%\noindent Barbour, Christopher, and Wright, Wilson. ``Consulting Report''. Manuscript, 2014.
+
+\noindent Ramsey, F.L., Schafer, D.W. (2013). {\it The Statistical Sleuth: A Course in Methods of Data Analysis, Third Edition}. Boston, MA: Brooks/Cole, Cengage Learning.\\
+
+
+\end{document}
+
+<<strata, include=FALSE>>=
+nsim <- 10
+
+length.probs <- with(pools, length/totals)
+
+strata.uneq <- function(n_vec){
+    sample <- matrix(NA, nrow = sum(n_vec), ncol = nsim)
+for(i in 1:nsim) {
+  #this line of code takes a stratified sample with probability prop to reach length
+    sample.info <- strata(pools[, c(1,4)], "stream", n_vec, method="systematic", 
+                     pik = length.probs)
+    #this line of code saves the reaches that were sampled
+    sample[, i] <- pools[sample.info$ID_unit, 2]
+}
+#Now we return the reaches that were sampled
+return(sample)
+}
+@
+
+<<simdat, echo=FALSE>>=
+pools <- read.csv("~/Documents/ConsultingSpring2015/simdat/nopools.csv")
+lengths <- read.csv("~/Documents/ConsultingSpring2015/simdat/lengths.csv")
+@
+
+<<readin, echo=FALSE, message=FALSE, warning=FALSE>>=
+
+#read in the data and change names to lowercase
+names(pools) <- c("stream", "reach", "num")
+
+#Tell R that reach is a factor and add the four reaches that are missing
+#(I assume because these reaches had 0 pools)
+pools$reach <- factor(pools$reach, levels=sort(c(levels(pools$reach), 
+  "BPC_0009", "BPC_0011","CGR_0001","CGR_0004")), exclude=FALSE)
+
+row1 <- c("Bypass Channel", "BPC_0009", 0)
+row2 <- c("Cougar Creek", "CGR_0001", 0)
+row3 <- c("Cougar Creek", "CGR_0004", 0)
+row4 <- c("Bypass Channel", "BPC_0011", 0)
+pools <- rbind(row1, row2, row3, row4, pools)
+
+set.seed(92)
+pools <- pools %>%
+   arrange(stream, reach)  %>%
+   mutate(percent=c(rnorm(109,40,20)))
+
+
+#order by stream and reach (this command uses dplyr)
+lengths <- arrange(lengths, STREAMNAME, REACHNAME)
+
+#add lengths to pools dataframe
+pools <- cbind(pools, length=lengths$REACHLENGTH)
+
+#add a reach ID column, reach 1 to 109
+pools$ID <- c(seq(1:109))
+
+#Now add a basin column, specifying whether each stream is in Merwin or Yale 
+pools$basin <- ifelse(pools$stream %in% c("Cape Horn Creek", "Jim Creek", 
+  "Indian George Creek", "Buncombe Hollow Creek", "Lower Speelyai", "Brooks Creek"), 
+  "Merwin", "Yale")
+
+
+length.totals <- pools %>%
+  group_by(stream) %>%
+  summarise(totals = sum(length))
+
+pools <- merge(pools, length.totals, by  = "stream")
+
+pools$length.probs <- with(pools, length/totals)
+
+head(pools)
+@
+
+<<truthsetup, include=FALSE>>=
+true_pools <- pools %>%
+  group_by(stream) %>%
+  summarise(true_percent=mean(percent)) %>%
+  ungroup()
+true_pools
+@
+
+<<oldcode>>=
+strata.uneq <- function(n_vec){
+  sample.all <- matrix(NA, nrow = sum(n_vec), ncol = nsim)
+  for(i in 1:nsim){
+    sample.brooks <- sample.fun("Brooks Creek")
+    sample.bun <- sample.fun("Buncombe Hollow Creek")
+    sample.bypass <- sample.fun("Bypass Channel")
+    sample.cape <- sample.fun("Cape Horn Creek")
+    sample.cougar <- sample.fun("Cougar Creek")
+    sample.dog <- 48
+    sample.indian <- sample.fun("Indian George Creek")
+    sample.jim <- sample.fun("Jim Creek")
+    sample.lsp <- 58
+    sample.nsioux <- sample.fun("North Siouxon Creek")
+    sample.ole <- sample.fun("Ole Creek")
+    sample.pan <- sample.fun("Panamaker Creek")
+    sample.sioux <- sample.fun("Siouxon Creek")
+    sample.sp <- sample.fun("Speelyai Creek")
+    sample.wfsp <- sample.fun("West Fork Speelyai Creek")
+    sample.wtsp <- sample.fun("West Tributary Speelyai Creek")
+
+    sample.all[, i] <- c(sample.brooks, sample.bun, sample.bypass, sample.cape, 
+                         sample.cougar,
+                         sample.dog, sample.indian, sample.jim, sample.lsp, 
+                         sample.nsioux, sample.ole, sample.pan, sample.sioux, 
+                         sample.sp, sample.wfsp, sample.wtsp)
+  }
+  return(sample.all)
+}
+@
+
