@@ -1,0 +1,287 @@
+\documentclass[12pt]{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+
+\usepackage{amssymb,amsmath}
+\usepackage{enumerate}
+\usepackage{float}
+\usepackage{verbatim}
+\usepackage{setspace}
+\usepackage{multicol}
+
+%% LaTeX margin settings:
+  \setlength{\textwidth}{7.0in}
+\setlength{\textheight}{9in}
+\setlength{\oddsidemargin}{-.5in}
+\setlength{\evensidemargin}{0in}
+\setlength{\topmargin}{-1.5cm}
+
+%% tell knitr to use smaller font for code chunks
+\def\fs{\footnotesize}
+\def\R{{\sf R}}
+\newcommand{\bfbeta}{\mbox{\boldmath $\beta$}}
+\newcommand{\bfD}{\mbox{\boldmath $D$}}
+\newcommand{\bfL}{\mbox{\boldmath $L$}}
+\newcommand{\bfR}{\mbox{\boldmath $R$}}
+\newcommand{\bfmu}{\mbox{\boldmath $\mu$}}
+\newcommand{\bfv}{\mbox{\boldmath $V$}}
+\newcommand{\bfX}{\mbox{\boldmath $X$}}
+\newcommand{\bfy}{\mbox{\boldmath $y$}}
+\newcommand{\bfb}{\mbox{\boldmath $b$}}
+\newcommand{\ytil}{\mbox{$\tilde{y}$}}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+  
+  
+  \begin{center}
+\large{Sampling: HW9} \\
+Leslie Gains-Germain
+\end{center}
+
+\begin{doublespacing}
+
+\begin{enumerate}
+
+\item \begin{enumerate}
+
+\item The Hansen Hurwitz estimate of the mean pollution concentration per lake in the population is $7.867$ ppm. See my work below.
+
+\begin{singlespace}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{N} \hlkwb{<-} \hlnum{100}
+\hlstd{n} \hlkwb{<-} \hlnum{8}
+\hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlkwd{rep}\hlstd{(}\hlnum{1.5}\hlstd{,} \hlnum{3}\hlstd{),} \hlkwd{rep}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{2}\hlstd{),} \hlnum{4}\hlstd{,} \hlnum{5}\hlstd{,} \hlnum{10}\hlstd{)}
+\hlstd{p} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlkwd{rep}\hlstd{(}\hlnum{2.5}\hlopt{/}\hlnum{200}\hlstd{,} \hlnum{3}\hlstd{),} \hlkwd{rep}\hlstd{(}\hlnum{2}\hlopt{/}\hlnum{200}\hlstd{,} \hlnum{2}\hlstd{),} \hlnum{1.5}\hlopt{/}\hlnum{200}\hlstd{,} \hlnum{1}\hlopt{/}\hlnum{200}\hlstd{,} \hlnum{0.5}\hlopt{/}\hlnum{200}\hlstd{)}
+\hlstd{ybarhh.fun} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{N}\hlstd{,} \hlkwc{n}\hlstd{,} \hlkwc{y.vec}\hlstd{,} \hlkwc{p.vec}\hlstd{) \{}
+  \hlnum{1}\hlopt{/}\hlstd{(N}\hlopt{*}\hlstd{n)}\hlopt{*}\hlkwd{sum}\hlstd{(y.vec}\hlopt{/}\hlstd{p.vec)}
+\hlstd{\}}
+
+\hlstd{ybarhh} \hlkwb{<-} \hlkwd{ybarhh.fun}\hlstd{(N, n, y, p)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{singlespace}
+
+\item The standard error of the Hansen-Hurwitz estimate in part (a) is $4.716$. See my work below.
+
+\begin{singlespace}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{thh} \hlkwb{<-} \hlstd{ybarhh}\hlopt{*}\hlnum{100}
+\hlstd{var.ybarhh.fun} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{N}\hlstd{,} \hlkwc{n}\hlstd{,} \hlkwc{y.vec}\hlstd{,} \hlkwc{p.vec}\hlstd{) \{}
+  \hlnum{1}\hlopt{/}\hlstd{(N}\hlopt{^}\hlnum{2}\hlopt{*}\hlstd{n}\hlopt{*}\hlstd{(n}\hlopt{-}\hlnum{1}\hlstd{))}\hlopt{*}\hlkwd{sum}\hlstd{((y.vec}\hlopt{/}\hlstd{p.vec}\hlopt{-}\hlstd{thh)}\hlopt{^}\hlnum{2}\hlstd{)}
+\hlstd{\}}
+
+\hlstd{se.ybarhh} \hlkwb{<-} \hlkwd{sqrt}\hlstd{(}\hlkwd{var.ybarhh.fun}\hlstd{(N, n, y, p))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{singlespace}
+
+\end{enumerate}
+
+\item \begin{enumerate}
+
+\item The first order inclusion probabilities are shown in the table below. I included the code for this part in the appendix.
+% latex table generated in R 3.2.2 by xtable 1.7-4 package
+% Fri Nov 13 11:35:36 2015
+\begin{table}[ht]
+\centering
+\begin{tabular}{rll}
+  \hline
+ & pi & pi.vals \\ 
+  \hline
+1 & pi\_1 & 0.52 \\ 
+  2 & pi\_2 & 0.56 \\ 
+  3 & pi\_3 & 0.7 \\ 
+  4 & pi\_4 & 0.74 \\ 
+  5 & pi\_5 & 0.74 \\ 
+  6 & pi\_6 & 0.74 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+\item The Horvitz-Thompson estimate for the population total is $39.16$. My work is shown below.
+
+\begin{singlespace}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{4}\hlstd{,}\hlnum{4}\hlstd{,}\hlnum{10}\hlstd{,}\hlnum{8}\hlstd{)}
+\hlstd{pi} \hlkwb{<-} \hlkwd{c}\hlstd{(pi.1, pi.2, pi.5, pi.6)}
+\hlstd{t.ht} \hlkwb{<-} \hlkwd{sum}\hlstd{(y}\hlopt{/}\hlstd{pi)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{singlespace}
+
+\item The second order inclusion probabilities for the fifteen $i, j$ combinations are shown in the table below. I included the code for this part in the appendix.
+
+% latex table generated in R 3.2.2 by xtable 1.7-4 package
+% Fri Nov 13 11:35:37 2015
+\begin{table}[ht]
+\centering
+\begin{tabular}{rll}
+  \hline
+ & pi & pi.vals \\ 
+  \hline
+1 & pi\_12 & 0.18 \\ 
+  2 & pi\_13 & 0.3 \\ 
+  3 & pi\_14 & 0.36 \\ 
+  4 & pi\_15 & 0.36 \\ 
+  5 & pi\_16 & 0.36 \\ 
+  6 & pi\_23 & 0.36 \\ 
+  7 & pi\_24 & 0.38 \\ 
+  8 & pi\_25 & 0.38 \\ 
+  9 & pi\_26 & 0.38 \\ 
+  10 & pi\_34 & 0.48 \\ 
+  11 & pi\_35 & 0.48 \\ 
+  12 & pi\_36 & 0.48 \\ 
+  13 & pi\_45 & 0.5 \\ 
+  14 & pi\_46 & 0.5 \\ 
+  15 & pi\_56 & 0.5 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+\item The variance of the Horvitz-Thompson estimator of $t$ is estimated to be $-29.40$ using Equation (72) on page $142$ of the notes. See my work below. Clearly the variance estimate is not accurate, because a variance cannot be negative. In this case, it would be more appropriate to use the Brewer and Hanif variance estimate.
+
+\begin{singlespace}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{y} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{4}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{8}\hlstd{,} \hlnum{8}\hlstd{)}
+\hlstd{pi} \hlkwb{<-} \hlkwd{c}\hlstd{(pi.1, pi.2, pi.4, pi.6)}
+\hlstd{pi.order2} \hlkwb{<-} \hlkwd{c}\hlstd{(pi.12, pi.14, pi.16, pi.24, pi.26)}
+
+\hlstd{var.tht} \hlkwb{<-} \hlstd{(}\hlnum{1}\hlopt{/}\hlstd{(pi.1}\hlopt{^}\hlnum{2}\hlstd{)} \hlopt{-} \hlnum{1}\hlopt{/}\hlstd{pi.1)}\hlopt{*}\hlstd{y[}\hlnum{1}\hlstd{]}\hlopt{^}\hlnum{2} \hlopt{+}
+  \hlstd{(}\hlnum{1}\hlopt{/}\hlstd{(pi.2}\hlopt{^}\hlnum{2}\hlstd{)} \hlopt{-} \hlnum{1}\hlopt{/}\hlstd{pi.2)}\hlopt{*}\hlstd{y[}\hlnum{2}\hlstd{]}\hlopt{^}\hlnum{2} \hlopt{+}
+  \hlstd{(}\hlnum{1}\hlopt{/}\hlstd{(pi.4}\hlopt{^}\hlnum{2}\hlstd{)} \hlopt{-} \hlnum{1}\hlopt{/}\hlstd{pi.4)}\hlopt{*}\hlstd{y[}\hlnum{3}\hlstd{]}\hlopt{^}\hlnum{2} \hlopt{+}
+  \hlstd{(}\hlnum{1}\hlopt{/}\hlstd{pi.6}\hlopt{^}\hlnum{2} \hlopt{-} \hlnum{1}\hlopt{/}\hlstd{pi.6)}\hlopt{*}\hlstd{y[}\hlnum{4}\hlstd{]}\hlopt{^}\hlnum{2} \hlopt{+}
+  \hlnum{2}\hlopt{*}\hlstd{((}\hlnum{1}\hlopt{/}\hlstd{pi.1}\hlopt{*}\hlnum{1}\hlopt{/}\hlstd{pi.2}\hlopt{-}\hlnum{1}\hlopt{/}\hlstd{pi.12)}\hlopt{*}\hlstd{y[}\hlnum{1}\hlstd{]}\hlopt{*}\hlstd{y[}\hlnum{2}\hlstd{]}\hlopt{+}
+  \hlstd{(}\hlnum{1}\hlopt{/}\hlstd{pi.1}\hlopt{*}\hlnum{1}\hlopt{/}\hlstd{pi.4}\hlopt{-}\hlnum{1}\hlopt{/}\hlstd{pi.14)}\hlopt{*}\hlstd{y[}\hlnum{1}\hlstd{]}\hlopt{*}\hlstd{y[}\hlnum{3}\hlstd{]} \hlopt{+}
+    \hlstd{(}\hlnum{1}\hlopt{/}\hlstd{pi.1}\hlopt{*}\hlnum{1}\hlopt{/}\hlstd{pi.6} \hlopt{-} \hlnum{1}\hlopt{/}\hlstd{pi.16)}\hlopt{*}\hlstd{y[}\hlnum{1}\hlstd{]}\hlopt{*}\hlstd{y[}\hlnum{4}\hlstd{]} \hlopt{+}
+    \hlstd{(}\hlnum{1}\hlopt{/}\hlstd{pi.2}\hlopt{*}\hlnum{1}\hlopt{/}\hlstd{pi.4}\hlopt{-}\hlnum{1}\hlopt{/}\hlstd{pi.24)}\hlopt{*}\hlstd{y[}\hlnum{2}\hlstd{]}\hlopt{*}\hlstd{y[}\hlnum{3}\hlstd{]} \hlopt{+}
+    \hlstd{(}\hlnum{1}\hlopt{/}\hlstd{pi.2}\hlopt{*}\hlnum{1}\hlopt{/}\hlstd{pi.6}\hlopt{-}\hlnum{1}\hlopt{/}\hlstd{pi.26)}\hlopt{*}\hlstd{y[}\hlnum{2}\hlstd{]}\hlopt{*}\hlstd{y[}\hlnum{4}\hlstd{]} \hlopt{+}
+  \hlstd{(}\hlnum{1}\hlopt{/}\hlstd{pi.4}\hlopt{*}\hlnum{1}\hlopt{/}\hlstd{pi.6} \hlopt{-} \hlnum{1}\hlopt{/}\hlstd{pi.46)}\hlopt{*}\hlstd{y[}\hlnum{3}\hlstd{]}\hlopt{*}\hlstd{y[}\hlnum{4}\hlstd{])}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{singlespace}
+
+
+\end{enumerate}
+
+\end{enumerate}
+
+\end{doublespacing}
+
+\newpage
+
+{\Large \bf R code appendix}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{pi.1} \hlkwb{<-} \hlnum{0.02}\hlopt{*}\hlnum{3}\hlopt{+}\hlnum{0.04}\hlopt{*}\hlnum{3}\hlopt{+}\hlnum{0.08}\hlopt{*}\hlnum{3}\hlopt{+}\hlnum{0.10}
+\hlstd{pi.2} \hlkwb{<-} \hlnum{0.02}\hlopt{*}\hlnum{3} \hlopt{+} \hlnum{0.04}\hlopt{*}\hlnum{3} \hlopt{+} \hlnum{0.10}\hlopt{*}\hlnum{3} \hlopt{+} \hlnum{0.08}
+\hlstd{pi.3} \hlkwb{<-} \hlnum{0.02}\hlopt{*}\hlnum{3} \hlopt{+} \hlnum{0.08}\hlopt{*}\hlnum{3} \hlopt{+} \hlnum{0.10}\hlopt{*}\hlnum{4}
+\hlstd{pi.4} \hlkwb{<-} \hlnum{0.02} \hlopt{+} \hlnum{0.04}\hlopt{*}\hlnum{2} \hlopt{+} \hlnum{0.08}\hlopt{*}\hlnum{2} \hlopt{+} \hlnum{0.10}\hlopt{*}\hlnum{3} \hlopt{+} \hlnum{0.08} \hlopt{+} \hlnum{0.10}
+\hlstd{pi.5} \hlkwb{<-} \hlnum{0.02} \hlopt{+} \hlnum{0.04}\hlopt{*}\hlnum{2} \hlopt{+} \hlnum{0.08}\hlopt{*}\hlnum{3} \hlopt{+} \hlnum{0.10}\hlopt{*}\hlnum{4}
+\hlstd{pi.6} \hlkwb{<-} \hlnum{0.02} \hlopt{+} \hlnum{0.04}\hlopt{*}\hlnum{2}\hlopt{+} \hlnum{0.08}\hlopt{*}\hlnum{3} \hlopt{+} \hlnum{0.10}\hlopt{*}\hlnum{4}
+
+\hlstd{pi} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"pi_1"}\hlstd{,} \hlstr{"pi_2"}\hlstd{,} \hlstr{"pi_3"}\hlstd{,} \hlstr{"pi_4"}\hlstd{,} \hlstr{"pi_5"}\hlstd{,} \hlstr{"pi_6"}\hlstd{)}
+\hlstd{pi.vals} \hlkwb{<-} \hlkwd{c}\hlstd{(pi.1, pi.2, pi.3, pi.4, pi.5, pi.6)}
+
+\hlkwd{require}\hlstd{(xtable)}
+\hlkwd{xtable}\hlstd{(}\hlkwd{cbind}\hlstd{(pi, pi.vals))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{pi.12} \hlkwb{<-} \hlnum{0.02}\hlopt{*}\hlnum{3} \hlopt{+} \hlnum{0.04}\hlopt{*}\hlnum{3}
+\hlstd{pi.13} \hlkwb{<-} \hlnum{0.02}\hlopt{*}\hlnum{3} \hlopt{+} \hlnum{0.08}\hlopt{*}\hlnum{3}
+\hlstd{pi.14} \hlkwb{<-} \hlnum{0.02} \hlopt{+} \hlnum{0.04}\hlopt{*}\hlnum{2} \hlopt{+} \hlnum{0.08}\hlopt{*}\hlnum{2} \hlopt{+} \hlnum{0.1}
+\hlstd{pi.15} \hlkwb{<-} \hlnum{0.02} \hlopt{+} \hlnum{0.04}\hlopt{*}\hlnum{2} \hlopt{+} \hlnum{0.08}\hlopt{*}\hlnum{2} \hlopt{+} \hlnum{0.1}
+\hlstd{pi.16} \hlkwb{<-} \hlnum{0.02} \hlopt{+} \hlnum{0.04}\hlopt{*}\hlnum{2} \hlopt{+} \hlnum{0.08}\hlopt{*}\hlnum{2} \hlopt{+} \hlnum{0.1}
+\hlstd{pi.23} \hlkwb{<-} \hlnum{0.02}\hlopt{*}\hlnum{3} \hlopt{+} \hlnum{0.1}\hlopt{*}\hlnum{3}
+\hlstd{pi.24} \hlkwb{<-} \hlnum{0.02} \hlopt{+} \hlnum{0.04}\hlopt{*}\hlnum{2} \hlopt{+} \hlnum{0.1}\hlopt{*}\hlnum{2} \hlopt{+} \hlnum{0.08}
+\hlstd{pi.25} \hlkwb{<-} \hlnum{0.02} \hlopt{+} \hlnum{0.04}\hlopt{*}\hlnum{2} \hlopt{+} \hlnum{0.1}\hlopt{*}\hlnum{2} \hlopt{+} \hlnum{0.08}
+\hlstd{pi.26} \hlkwb{<-} \hlnum{0.02} \hlopt{+} \hlnum{0.04}\hlopt{*}\hlnum{2} \hlopt{+} \hlnum{0.1}\hlopt{*}\hlnum{2} \hlopt{+} \hlnum{0.08}
+\hlstd{pi.34} \hlkwb{<-} \hlnum{0.02} \hlopt{+} \hlnum{0.08}\hlopt{*}\hlnum{2} \hlopt{+} \hlnum{0.1}\hlopt{*}\hlnum{3}
+\hlstd{pi.35} \hlkwb{<-} \hlnum{0.02} \hlopt{+} \hlnum{0.08}\hlopt{*}\hlnum{2} \hlopt{+} \hlnum{0.1}\hlopt{*}\hlnum{3}
+\hlstd{pi.36} \hlkwb{<-} \hlnum{0.02} \hlopt{+} \hlnum{0.08}\hlopt{*}\hlnum{2} \hlopt{+} \hlnum{0.1}\hlopt{*}\hlnum{3}
+\hlstd{pi.45} \hlkwb{<-} \hlnum{0.04} \hlopt{+} \hlnum{0.08} \hlopt{+} \hlnum{0.1}\hlopt{*}\hlnum{3} \hlopt{+} \hlnum{0.08}
+\hlstd{pi.46} \hlkwb{<-} \hlnum{0.04} \hlopt{+} \hlnum{0.08} \hlopt{+} \hlnum{0.1}\hlopt{*}\hlnum{3} \hlopt{+} \hlnum{0.08}
+\hlstd{pi.56} \hlkwb{<-} \hlnum{0.04} \hlopt{+} \hlnum{0.08}\hlopt{*}\hlnum{2} \hlopt{+} \hlnum{0.1}\hlopt{*}\hlnum{3}
+
+\hlstd{pi} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"pi_12"}\hlstd{,} \hlstr{"pi_13"}\hlstd{,} \hlstr{"pi_14"}\hlstd{,} \hlstr{"pi_15"}\hlstd{,} \hlstr{"pi_16"}\hlstd{,} \hlstr{"pi_23"}\hlstd{,} \hlstr{"pi_24"}\hlstd{,} \hlstr{"pi_25"}\hlstd{,} \hlstr{"pi_26"}\hlstd{,} \hlstr{"pi_34"}\hlstd{,} \hlstr{"pi_35"}\hlstd{,} \hlstr{"pi_36"}\hlstd{,} \hlstr{"pi_45"}\hlstd{,} \hlstr{"pi_46"}\hlstd{,} \hlstr{"pi_56"}\hlstd{)}
+\hlstd{pi.vals} \hlkwb{<-} \hlkwd{c}\hlstd{(pi.12, pi.13, pi.14, pi.15, pi.16, pi.23, pi.24, pi.25, pi.26,}
+             \hlstd{pi.34, pi.35, pi.36, pi.45, pi.46, pi.56)}
+
+\hlkwd{require}\hlstd{(xtable)}
+\hlkwd{xtable}\hlstd{(}\hlkwd{cbind}\hlstd{(pi, pi.vals))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+
+\end{document}

@@ -1,0 +1,278 @@
+\documentclass[12pt]{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+
+\usepackage{amssymb,amsmath}
+\usepackage{enumerate}
+\usepackage{float}
+\usepackage{verbatim}
+\usepackage{setspace}
+\usepackage{multicol}
+
+%% LaTeX margin settings:
+  \setlength{\textwidth}{7.0in}
+\setlength{\textheight}{9in}
+\setlength{\oddsidemargin}{-.5in}
+\setlength{\evensidemargin}{0in}
+\setlength{\topmargin}{-1.5cm}
+
+%% tell knitr to use smaller font for code chunks
+\def\fs{\footnotesize}
+\def\R{{\sf R}}
+\newcommand{\bfbeta}{\mbox{\boldmath $\beta$}}
+\newcommand{\bfD}{\mbox{\boldmath $D$}}
+\newcommand{\bfL}{\mbox{\boldmath $L$}}
+\newcommand{\bfR}{\mbox{\boldmath $R$}}
+\newcommand{\bfmu}{\mbox{\boldmath $\mu$}}
+\newcommand{\bfv}{\mbox{\boldmath $V$}}
+\newcommand{\bfX}{\mbox{\boldmath $X$}}
+\newcommand{\bfy}{\mbox{\boldmath $y$}}
+\newcommand{\bfb}{\mbox{\boldmath $b$}}
+\newcommand{\ytil}{\mbox{$\tilde{y}$}}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+  
+  
+  \begin{center}
+\large{Sampling: HW6} \\
+Leslie Gains-Germain
+\end{center}
+
+\begin{doublespacing}
+
+\begin{enumerate}
+
+\item 6(b) page 103
+\begin{table}[H]
+\begin{tabular}{c|c|c|c}
+& true \% practicing energy conservation & Total in Population & \# Sampled \\
+\hline
+House Dwellers & 45\% & 35000 & 504 \\
+Apartment Dwellers & 25\% & 45000 & 324 \\
+Condiminium Residents & 3\% & 10000 & 72 \\
+\hline
+\end{tabular}
+\end{table}
+
+The true proportion of households that practice energy conservation is $0.45(35000/90000)+0.25(45000/90000)+0.03(10000/90000) = 0.303$. If we take a SRS of size $n=900$, then the variance of $\hat{p}$ is as follows:
+\begin{align*}
+V_{SRS}(\hat{p}_{SRS}) &= \left(\frac{N-n}{N}\right) \left(\frac{p(1-p)}{n}\right) = \left(\frac{90000-900}{90000}\right) \left(\frac{0.303*0.697}{900}\right) \\
+&= 0.000232
+\end{align*}
+
+
+
+
+If we take a stratified sample of the size given in the table, the variance of the estimator $\hat{p}$ is given as follows:
+\begin{align*}
+V(\hat{p}_{STR}) = &\sum_{h=1}^{h=3} \left(\frac{N_h}{N}\right)^2 \left(\frac{N_h-n_h}{N_h-1}\right) \left(\frac{p_h(1-p_h)}{n_h}\right) \\
+= &\left(\frac{35000}{90000}\right)^2\left(\frac{35000-504}{35000-1}\right)\left(\frac{0.45*0.55}{504}\right) + \\
+&\left(\frac{45000}{90000}\right)^2\left(\frac{45000-324}{45000-1}\right)\left(\frac{0.25*0.75}{324}\right) + \\
+&\left(\frac{10000}{90000}\right)^2\left(\frac{10000-72}{10000-1}\right)\left(\frac{0.03*0.97}{72}\right) \\
+= &0.000222
+\end{align*}
+
+The gain in variance of $\hat{p}$ with the stratified sample compared to the SRS is $0.000222/0.000232=0.957$
+
+
+
+\item 7(c) page $104$
+
+\begin{table}[H]
+\centering
+\begin{tabular}{c|c|c|c}
+Department & Total in Stratum & \# in Sample & \# refereed publications in sample \\
+\hline
+Biological Sciences & 102 & 7 & 1 \\
+Physical Sciences & 310 & 19 & 10 \\
+Social Sciences & 217 & 13 & 9 \\
+Humanities & 178 & 11 & 8 \\
+\hline
+Total & 807 & 50 & \\
+\hline
+\end{tabular}
+\end{table}
+
+The estimated proportion of all faculty with no refereed publications is $0.567$. The standard error of $\hat{p}$ is $0.0658$. My work is shown in the code below.
+\begin{align*}
+\hat{V}(\hat{p}_{STR}) = &\sum_{h=1}^{h=3} \left(\frac{N_h}{N}\right)^2 \left(\frac{N_h-n_h}{N_h}\right) \left(\frac{p_h(1-p_h)}{n_h-1}\right)
+\end{align*}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlnum{102}\hlopt{/}\hlnum{807}\hlopt{*}\hlnum{1}\hlopt{/}\hlnum{7}\hlopt{+}\hlnum{310}\hlopt{/}\hlnum{807}\hlopt{*}\hlnum{10}\hlopt{/}\hlnum{19}\hlopt{+}\hlnum{217}\hlopt{/}\hlnum{807}\hlopt{*}\hlnum{9}\hlopt{/}\hlnum{13}\hlopt{+}\hlnum{178}\hlopt{/}\hlnum{807}\hlopt{*}\hlnum{8}\hlopt{/}\hlnum{11}
+\hlcom{#0.567}
+\hlkwd{sqrt}\hlstd{((}\hlnum{102}\hlopt{/}\hlnum{807}\hlstd{)}\hlopt{^}\hlnum{2}\hlopt{*}\hlstd{(}\hlnum{102}\hlopt{-}\hlnum{7}\hlstd{)}\hlopt{/}\hlnum{102}\hlopt{*}\hlstd{(}\hlnum{1}\hlopt{/}\hlnum{7}\hlopt{*}\hlnum{6}\hlopt{/}\hlnum{7}\hlstd{)}\hlopt{/}\hlnum{6}\hlopt{+}
+\hlstd{(}\hlnum{310}\hlopt{/}\hlnum{807}\hlstd{)}\hlopt{^}\hlnum{2}\hlopt{*}\hlstd{(}\hlnum{310}\hlopt{-}\hlnum{19}\hlstd{)}\hlopt{/}\hlnum{310}\hlopt{*}\hlstd{(}\hlnum{10}\hlopt{/}\hlnum{19}\hlopt{*}\hlnum{9}\hlopt{/}\hlnum{19}\hlstd{)}\hlopt{/}\hlnum{18}\hlopt{+}
+\hlstd{(}\hlnum{217}\hlopt{/}\hlnum{807}\hlstd{)}\hlopt{^}\hlnum{2}\hlopt{*}\hlstd{(}\hlnum{217}\hlopt{-}\hlnum{13}\hlstd{)}\hlopt{/}\hlnum{217}\hlopt{*}\hlstd{(}\hlnum{9}\hlopt{/}\hlnum{13}\hlopt{*}\hlnum{4}\hlopt{/}\hlnum{13}\hlstd{)}\hlopt{/}\hlnum{12}\hlopt{+}
+  \hlstd{(}\hlnum{178}\hlopt{/}\hlnum{807}\hlstd{)}\hlopt{^}\hlnum{2}\hlopt{*}\hlstd{(}\hlnum{178}\hlopt{-}\hlnum{11}\hlstd{)}\hlopt{/}\hlnum{178}\hlopt{*}\hlstd{(}\hlnum{8}\hlopt{/}\hlnum{11}\hlopt{*}\hlnum{3}\hlopt{/}\hlnum{11}\hlstd{)}\hlopt{/}\hlnum{10}\hlstd{)}
+\hlcom{#0.0658}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\item The first table shows the data for the Empathy-building exercises method, and the second table shows the data for the Gestalt exercises method.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{c|c|c|c}
+Stratum & Stratum Total & \# in Sample & empathy building as `exp learning' \\
+\hline
+General nursing tutors (GT) & 150 & 109 & 54 \\
+Psychiatric nursing tutors (PT) & 34 & 26 & 20 \\
+General nursing students (GS) & 2680 & 222 & 89 \\
+Psychiatric nursing students (PS) & 570 & 40 & 25 \\
+\hline
+\end{tabular}
+\end{table}
+
+The overall estimate for the proportion of students and tutors who identify the empathy-building exercises as `experiential learning' is $0.4459$. The standard error for this estimate is $0.02761$. My work is shown below.
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlnum{34}\hlopt{/}\hlnum{3434}\hlopt{*}\hlnum{20}\hlopt{/}\hlnum{26}\hlopt{+}\hlnum{150}\hlopt{/}\hlnum{3434}\hlopt{*}\hlnum{54}\hlopt{/}\hlnum{109}\hlopt{+}\hlnum{2680}\hlopt{/}\hlnum{3434}\hlopt{*}\hlnum{89}\hlopt{/}\hlnum{222}\hlopt{+}\hlnum{570}\hlopt{/}\hlnum{3434}\hlopt{*}\hlnum{25}\hlopt{/}\hlnum{40}
+\hlcom{#0.44587}
+\hlkwd{sqrt}\hlstd{((}\hlnum{34}\hlopt{/}\hlnum{3434}\hlstd{)}\hlopt{^}\hlnum{2}\hlopt{*}\hlstd{(}\hlnum{34}\hlopt{-}\hlnum{26}\hlstd{)}\hlopt{/}\hlnum{34}\hlopt{*}\hlstd{(}\hlnum{20}\hlopt{/}\hlnum{26}\hlopt{*}\hlnum{6}\hlopt{/}\hlnum{26}\hlstd{)}\hlopt{/}\hlnum{25}\hlopt{+}
+\hlstd{(}\hlnum{150}\hlopt{/}\hlnum{3434}\hlstd{)}\hlopt{^}\hlnum{2}\hlopt{*}\hlstd{(}\hlnum{150}\hlopt{-}\hlnum{109}\hlstd{)}\hlopt{/}\hlnum{150}\hlopt{*}\hlstd{(}\hlnum{54}\hlopt{/}\hlnum{109}\hlopt{*}\hlnum{55}\hlopt{/}\hlnum{109}\hlstd{)}\hlopt{/}\hlnum{108}\hlopt{+}
+\hlstd{(}\hlnum{2680}\hlopt{/}\hlnum{3434}\hlstd{)}\hlopt{^}\hlnum{2}\hlopt{*}\hlstd{(}\hlnum{2680}\hlopt{-}\hlnum{222}\hlstd{)}\hlopt{/}\hlnum{2680}\hlopt{*}\hlstd{(}\hlnum{89}\hlopt{/}\hlnum{222}\hlopt{*}\hlnum{133}\hlopt{/}\hlnum{222}\hlstd{)}\hlopt{/}\hlnum{221}\hlopt{+}
+  \hlstd{(}\hlnum{570}\hlopt{/}\hlnum{3434}\hlstd{)}\hlopt{^}\hlnum{2}\hlopt{*}\hlstd{(}\hlnum{570}\hlopt{-}\hlnum{40}\hlstd{)}\hlopt{/}\hlnum{570}\hlopt{*}\hlstd{(}\hlnum{25}\hlopt{/}\hlnum{40}\hlopt{*}\hlnum{15}\hlopt{/}\hlnum{40}\hlstd{)}\hlopt{/}\hlnum{39}\hlstd{)}
+\hlcom{#0.02761}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+\begin{table}[H]
+\centering
+\begin{tabular}{c|c|c|c}
+Stratum & Stratum Total & \# in Sample & Gestalt ex. as `exp learning' \\
+\hline
+General nursing tutors (GT) & 150 & 109 & 12 \\
+Psychiatric nursing tutors (PT) & 34 & 26 & 5 \\
+General nursing students (GS) & 2680 & 222 & 24 \\
+Psychiatric nursing students (PS) & 570 & 40 & 4 \\
+\hline
+\end{tabular}
+\end{table}
+
+The overall estimate for the proportion of students and tutors who identify the Gestalt exercises as `experiential learning' is $0.1077$. The standard error for this estimate is $0.0174$. My work is shown below.
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlnum{34}\hlopt{/}\hlnum{3434}\hlopt{*}\hlnum{5}\hlopt{/}\hlnum{26}\hlopt{+}\hlnum{150}\hlopt{/}\hlnum{3434}\hlopt{*}\hlnum{12}\hlopt{/}\hlnum{109}\hlopt{+}\hlnum{2680}\hlopt{/}\hlnum{3434}\hlopt{*}\hlnum{24}\hlopt{/}\hlnum{222}\hlopt{+}\hlnum{570}\hlopt{/}\hlnum{3434}\hlopt{*}\hlnum{4}\hlopt{/}\hlnum{40}
+\hlcom{#0.1077}
+\hlkwd{sqrt}\hlstd{((}\hlnum{34}\hlopt{/}\hlnum{3434}\hlstd{)}\hlopt{^}\hlnum{2}\hlopt{*}\hlstd{(}\hlnum{34}\hlopt{-}\hlnum{26}\hlstd{)}\hlopt{/}\hlnum{34}\hlopt{*}\hlstd{(}\hlnum{5}\hlopt{/}\hlnum{26}\hlopt{*}\hlnum{21}\hlopt{/}\hlnum{26}\hlstd{)}\hlopt{/}\hlnum{25}\hlopt{+}
+\hlstd{(}\hlnum{150}\hlopt{/}\hlnum{3434}\hlstd{)}\hlopt{^}\hlnum{2}\hlopt{*}\hlstd{(}\hlnum{150}\hlopt{-}\hlnum{109}\hlstd{)}\hlopt{/}\hlnum{150}\hlopt{*}\hlstd{(}\hlnum{12}\hlopt{/}\hlnum{109}\hlopt{*}\hlnum{97}\hlopt{/}\hlnum{109}\hlstd{)}\hlopt{/}\hlnum{108}\hlopt{+}
+\hlstd{(}\hlnum{2680}\hlopt{/}\hlnum{3434}\hlstd{)}\hlopt{^}\hlnum{2}\hlopt{*}\hlstd{(}\hlnum{2680}\hlopt{-}\hlnum{222}\hlstd{)}\hlopt{/}\hlnum{2680}\hlopt{*}\hlstd{(}\hlnum{24}\hlopt{/}\hlnum{222}\hlopt{*}\hlnum{198}\hlopt{/}\hlnum{222}\hlstd{)}\hlopt{/}\hlnum{221}\hlopt{+}
+  \hlstd{(}\hlnum{570}\hlopt{/}\hlnum{3434}\hlstd{)}\hlopt{^}\hlnum{2}\hlopt{*}\hlstd{(}\hlnum{570}\hlopt{-}\hlnum{40}\hlstd{)}\hlopt{/}\hlnum{570}\hlopt{*}\hlstd{(}\hlnum{4}\hlopt{/}\hlnum{40}\hlopt{*}\hlnum{36}\hlopt{/}\hlnum{40}\hlstd{)}\hlopt{/}\hlnum{39}\hlstd{)}
+\hlcom{#0.0174}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\item \begin{enumerate}
+\item The optimal allocation is as follows:
+\begin{align*}
+n_h &= \frac{nN_hs_h}{\sum_{h=1}^2N_hs_h}
+\end{align*}
+
+First, I solve for $s_1$ and $s_2$. I assume that 1/N is approximately equal to $0$ because the population is really large (Google says that there are about 1.5 million residents of Milwaukee). 
+\begin{align*}
+s_1^2 &= \frac{N_1p_1(1-p_1)}{N_1-1} = \frac{N_1/N p_1(1-p_1)}{N_1/N-1/N} \approx \frac{N_1/N p_1(1-p_1)}{N_1/N} = 0.1*0.9 = 0.090 \\
+s_2^2 &= \frac{N_2p_2(1-p_2)}{N_2-1} = \frac{N_2/N p_2(1-p_2)}{N_2/N-2/N} \approx \frac{N_2/N p_2(1-p_2)}{N_2/N} = 0.03*0.97 = 0.029
+\end{align*}
+Then, I find the optimal allocation given different variances. I assume that the total sample size, $n$, is $2000$. I find that the optimal allocation is to sample $1079$ residents from Stratum $1$ and $921$ residents from Stratum $2$.
+\begin{align*}
+n_1 &= \frac{nN_1s_1}{N_1s_1+N_2s_2} = \frac{2000N_1/Ns_1}{N_1/Ns_1+N_2/Ns_2} \\
+&= \frac{2000*0.4\sqrt(0.09)}{0.4*\sqrt(0.09)+0.6*\sqrt(0.029)} \approx 1079 \\
+n_2 &= \frac{nN_2s_2}{N_1s_1+N_2s_2} = \frac{2000N_2/Ns_2}{N_1/Ns_1+N_2/Ns_2} \\
+&= \frac{2000*0.6\sqrt(0.029)}{0.4*\sqrt(0.09)+0.6*\sqrt(0.029)} \approx 921 
+\end{align*}
+
+
+
+
+\item First, I find the variance of $\hat{p}$ under optimal allocation. I assume that $1/N \approx 0$, and I assume that $n_1/N$ is $\approx 0$ because the sample size is so large.
+\begin{align*}
+V(\hat{p}_{STR}) &= \left(\frac{N_1}{N}\right)^2 \left(\frac{N_1-n_1}{N_1-1}\right) \left(\frac{p_1(1-p_1)}{n_1}\right)+\left(\frac{N_2}{N}\right)^2 \left(\frac{N_2-n_2}{N_2-1}\right) \left(\frac{p_2(1-p_2)}{n_2}\right) \\
+&= \left(\frac{N_1}{N}\right)^2 \left(\frac{N_1/N-n_1/N}{N_1/N+1/N}\right) \left(\frac{p_1(1-p_1)}{n_1}\right)+\left(\frac{N_2}{N}\right)^2 \left(\frac{N_2/N-n_2/N}{N_2/N+1/N}\right) \left(\frac{p_2(1-p_2)}{n_2}\right) \\
+&\approx \left(\frac{N_1}{N}\right)^2 \left(\frac{p_1(1-p_1)}{n_1}\right)+\left(\frac{N_2}{N}\right)^2 \left(\frac{p_2(1-p_2)}{n_2}\right) \\
+&= 0.4^2 \left(\frac{0.1(1-0.1)}{1079}\right)+0.6^2 \left(\frac{0.03(1-0.03)}{921}\right) = 0.0000247
+\end{align*}
+
+
+
+
+Under proportional allocation, $n_1=N_1/N=2000*0.4=800$ and $n_2=N_2/N=2000*0.6=1200$. Then the variance of of $\hat{p}$, using the same formula as above, is:
+\begin{align*}
+V(\hat{p}_{STR}) &= 0.4^2 \left(\frac{0.1(1-0.1)}{800}\right)+0.6^2 \left(\frac{0.03(1-0.03)}{1200}\right) = 0.0000267
+\end{align*}
+
+For a simple random sample of $2000$ from the population, the variance of $\hat{p}$ is shown below. I first find the true $p$ in the population, $p=0.4*0.1+0.6*0.03 = 0.058$. Again, we assume that $N$ is sufficiently large that the finite population correction is not necessary.
+\begin{align*}
+V(\hat{p}_{SRS}) &= \left(\frac{N-n}{N-1}\right)\left(\frac{p(1-p)}{n}\right)
+\approx \frac{p(1-p)}{n} = 0.0000273
+\end{align*}
+We noticed that the variance of the estimator is smallest for the optimal allocation sampling scheme and largest for the simple random sample from entire population.
+
+\end{enumerate}
+
+
+\end{enumerate}
+
+\end{doublespacing}
+
+
+\end{document}

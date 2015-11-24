@@ -1,0 +1,184 @@
+\documentclass[12pt]{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+
+\usepackage{amssymb,amsmath}
+\usepackage{enumerate}
+\usepackage{float}
+\usepackage{verbatim}
+\usepackage{setspace}
+\usepackage{multicol}
+
+%% LaTeX margin settings:
+  \setlength{\textwidth}{7.0in}
+\setlength{\textheight}{9in}
+\setlength{\oddsidemargin}{-.5in}
+\setlength{\evensidemargin}{0in}
+\setlength{\topmargin}{-1.5cm}
+
+%% tell knitr to use smaller font for code chunks
+\def\fs{\footnotesize}
+\def\R{{\sf R}}
+\newcommand{\bfbeta}{\mbox{\boldmath $\beta$}}
+\newcommand{\bfD}{\mbox{\boldmath $D$}}
+\newcommand{\bfL}{\mbox{\boldmath $L$}}
+\newcommand{\bfR}{\mbox{\boldmath $R$}}
+\newcommand{\bfmu}{\mbox{\boldmath $\mu$}}
+\newcommand{\bfv}{\mbox{\boldmath $V$}}
+\newcommand{\bfX}{\mbox{\boldmath $X$}}
+\newcommand{\bfy}{\mbox{\boldmath $y$}}
+\newcommand{\bfb}{\mbox{\boldmath $b$}}
+\newcommand{\ytil}{\mbox{$\tilde{y}$}}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+  
+  
+  \begin{center}
+\large{Sampling: HW7} \\
+Leslie Gains-Germain
+\end{center}
+
+\begin{doublespacing}
+
+\begin{enumerate}
+
+\item The ratio $B$ represents the true mean number of board feet found by measuring for every one board foot found using the eyeball estimate in the $45$ acre timber stand. {\it Another interpretation: The ratio $B$ represents the true average ratio of measured volume to eyeballed volume of timber in the $45$-acre timber stand.} If this ratio is close to $1$, the timber cruiser is very good at estimating plot volume by eyeball. $t_y$ is the true total merchantable volume in the $45$ acre timber stand in board feet, found by the measuring technique.
+
+\item The estimate of $B$ is $1.0458$. My work is shown in the R code below.
+
+
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{Bhat} \hlkwb{<-} \hlkwd{with}\hlstd{(data,} \hlkwd{mean}\hlstd{(y)}\hlopt{/}\hlkwd{mean}\hlstd{(x))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\item The ratio estimate for $t_y$ is $116085$ board feet. 
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{N} \hlkwb{<-} \hlnum{450}
+\hlstd{t.yhat} \hlkwb{<-} \hlstd{Bhat}\hlopt{*}\hlkwd{mean}\hlstd{(data}\hlopt{$}\hlstd{x)}\hlopt{*}\hlstd{N}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\item Because $\bar{x}_U$ is unknown, the estimated variance of $\hat{t}_{yr}$ is approximately $1221314$. My work is shown below.
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{n} \hlkwb{<-} \hlnum{30}
+\hlstd{s.e} \hlkwb{<-} \hlkwd{sqrt}\hlstd{(}\hlnum{1}\hlopt{/}\hlstd{(n}\hlopt{-}\hlnum{1}\hlstd{)}\hlopt{*}\hlkwd{sum}\hlstd{((data}\hlopt{$}\hlstd{y}\hlopt{-}\hlstd{(Bhat}\hlopt{*}\hlstd{data}\hlopt{$}\hlstd{x))}\hlopt{^}\hlnum{2}\hlstd{))}
+\hlstd{var.t.yhat} \hlkwb{<-} \hlstd{N}\hlopt{*}\hlstd{(N}\hlopt{-}\hlstd{n)}\hlopt{*}\hlstd{s.e}\hlopt{^}\hlnum{2}\hlopt{/}\hlstd{n}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\item An approximate $95\%$ t-based confidence interval for $B$ is $1.0254$ to $1.0662$. My work is shown below.
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{tstar} \hlkwb{<-} \hlkwd{qt}\hlstd{(}\hlnum{0.975}\hlstd{,} \hlnum{29}\hlstd{)}
+\hlstd{var.bhat} \hlkwb{<-} \hlstd{(N}\hlopt{-}\hlstd{n)}\hlopt{/}\hlstd{(N}\hlopt{*}\hlkwd{mean}\hlstd{(data}\hlopt{$}\hlstd{x)}\hlopt{^}\hlnum{2}\hlstd{)}\hlopt{*}\hlstd{s.e}\hlopt{^}\hlnum{2}\hlopt{/}\hlstd{n}
+\hlstd{ci.l} \hlkwb{<-} \hlstd{Bhat}\hlopt{-}\hlstd{tstar}\hlopt{*}\hlkwd{sqrt}\hlstd{(var.bhat)}
+\hlstd{ci.h} \hlkwb{<-} \hlstd{Bhat}\hlopt{+}\hlstd{tstar}\hlopt{*}\hlkwd{sqrt}\hlstd{(var.bhat)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\item For every one board foot estimated by eyeball, we are $95\%$ confident that the true mean number of board feet found by measuring is between $1.0254$ and $1.0662$ board feet. {\it Another interpretation: We are $95\%$ confident that the measured volume is between $2.54\%$ and $6.62\%$ larger than the eyeballed volume on average.} 
+
+\item An approximate $95\%$ t-based confidence interval for $t_y$ is $113824.8$ to $118345.2$. My work is shown below.
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{ci} \hlkwb{<-} \hlkwd{c}\hlstd{(t.yhat} \hlopt{-} \hlstd{tstar}\hlopt{*}\hlkwd{sqrt}\hlstd{(var.t.yhat), t.yhat} \hlopt{+} \hlstd{tstar}\hlopt{*}\hlkwd{sqrt}\hlstd{(var.t.yhat))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\item We are $95\%$ confident that the true total merchantable volume in the $45$ acre timber stand is between $113824.8$ and $118345.2$ board feet.
+
+\item Yes, I would expect ratio estimation to be an improvement over estimation based on the SRS of y-values only because the plot shows a strong positive linear relationship between the eyeballed plot volume and the measured plot volume, and the relationship passes through the origin.
+
+\item If the point $(300, 305)$ is removed, the new estimate of $t_y$ is $115355.2$ board feet, with a standard error of $1140.12$. 
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{data.remove} \hlkwb{<-} \hlstd{data[}\hlopt{-}\hlnum{14}\hlstd{,]}
+\hlstd{Bhat.remove} \hlkwb{<-} \hlkwd{with}\hlstd{(data.remove,} \hlkwd{mean}\hlstd{(y)}\hlopt{/}\hlkwd{mean}\hlstd{(x))}
+\hlstd{t.yhat.remove} \hlkwb{<-} \hlstd{Bhat.remove}\hlopt{*}\hlkwd{mean}\hlstd{(data.remove}\hlopt{$}\hlstd{x)}\hlopt{*}\hlstd{N}
+
+\hlstd{n.new} \hlkwb{<-} \hlnum{29}
+\hlstd{s.e.remove} \hlkwb{<-} \hlkwd{sqrt}\hlstd{(}\hlnum{1}\hlopt{/}\hlstd{(n.new}\hlopt{-}\hlnum{1}\hlstd{)}\hlopt{*}\hlkwd{sum}\hlstd{((data.remove}\hlopt{$}\hlstd{y}\hlopt{-}\hlstd{(Bhat.remove}\hlopt{*}\hlstd{data.remove}\hlopt{$}\hlstd{x))}\hlopt{^}\hlnum{2}\hlstd{))}
+\hlstd{var.t.yhat.remove} \hlkwb{<-} \hlstd{N}\hlopt{*}\hlstd{(N}\hlopt{-}\hlstd{n.new)}\hlopt{*}\hlstd{s.e.remove}\hlopt{^}\hlnum{2}\hlopt{/}\hlstd{n.new}
+\hlstd{se.t.yhat.remove} \hlkwb{<-} \hlkwd{sqrt}\hlstd{(var.t.yhat.remove)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\item See attached handwritten sheet.
+
+\end{enumerate}
+
+\end{doublespacing}
+
+
+\end{document}

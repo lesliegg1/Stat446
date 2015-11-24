@@ -1,0 +1,227 @@
+\documentclass[12pt]{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+
+\usepackage{amssymb,amsmath}
+\usepackage{enumerate}
+\usepackage{float}
+\usepackage{verbatim}
+\usepackage{setspace}
+\usepackage{multicol}
+
+%% LaTeX margin settings:
+  \setlength{\textwidth}{7.0in}
+\setlength{\textheight}{9in}
+\setlength{\oddsidemargin}{-.5in}
+\setlength{\evensidemargin}{0in}
+\setlength{\topmargin}{-1.5cm}
+
+%% tell knitr to use smaller font for code chunks
+\def\fs{\footnotesize}
+\def\R{{\sf R}}
+\newcommand{\bfbeta}{\mbox{\boldmath $\beta$}}
+\newcommand{\bfD}{\mbox{\boldmath $D$}}
+\newcommand{\bfL}{\mbox{\boldmath $L$}}
+\newcommand{\bfR}{\mbox{\boldmath $R$}}
+\newcommand{\bfmu}{\mbox{\boldmath $\mu$}}
+\newcommand{\bfv}{\mbox{\boldmath $V$}}
+\newcommand{\bfX}{\mbox{\boldmath $X$}}
+\newcommand{\bfy}{\mbox{\boldmath $y$}}
+\newcommand{\bfb}{\mbox{\boldmath $b$}}
+\newcommand{\ytil}{\mbox{$\tilde{y}$}}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+  
+  
+  \begin{center}
+\large{Sampling: HW7} \\
+Leslie Gains-Germain
+\end{center}
+
+\begin{doublespacing}
+
+\begin{enumerate}
+
+\item The estimated regression equation I would propose is:
+\begin{align*}
+\hat{fish} = \hat{\beta_0} + \hat{\beta_1}x_1
+\end{align*}
+where $\hat{fish}$ is the estimated mean number of fish caught by anglers on this lake in August after fishing $x_1$ hours. $\hat{\beta_0}$ is the estimated mean number of fish caught after fishing $0$ hours (we would expect this estimate to be near $0$). $\hat{\beta_1}$ is the estimated mean number of fish caught per hour by anglers on this lake in August. $\hat{\beta_1}$ is the quantity of interest.
+
+\item The estimated regression equation I would propose is:
+\begin{align*}
+\hat{p}_{sports} &= \hat{\beta_0} + \hat{\beta_1}x_1 + \hat{\beta_{11}}x_1^2 + \hat{\beta_2}x_2
+\end{align*}
+where $\hat{p}_{sports}$ is the estimated proportion of time in television news broadcasts in Bozeman that is devoted to sports in month $x_1$, with $x_2$ breaking news events. $x_1$ is the month of the year ($x_1 \in (1, 2,..., 12)$), and $x_2$ is the number of breaking news events that occur each month. I would expect the proportion of time devoted to sports to peak in February because of the superbowl, and then decrease after that. I have included a squared term in the estimated regression equation to allow for this curvature in the relationship. For the second predictor, I would expect months with greater numbers of breaking news events to have lower proportions of time devoted to sports because more time will be devoted to these breaking news events.
+
+
+
+
+\item \begin{enumerate}
+
+\item I fit the three regression models in the code below.
+
+\begin{singlespace}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{lm.1} \hlkwb{<-} \hlkwd{lm}\hlstd{(volume} \hlopt{~} \hlstd{diameter,} \hlkwc{data} \hlstd{= cherry)}
+\hlstd{lm.2} \hlkwb{<-} \hlkwd{lm}\hlstd{(volume} \hlopt{~} \hlstd{height,} \hlkwc{data} \hlstd{= cherry)}
+\hlstd{lm.3} \hlkwb{<-} \hlkwd{lm}\hlstd{(volume} \hlopt{~} \hlstd{diameter} \hlopt{+} \hlstd{height,} \hlkwc{data} \hlstd{= cherry)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{singlespace}
+
+\item Using the first regression model, the total volume for all black cherry trees in the forest is estimated to be $102318.9$ cubic feet, with a $95\%$ confidence interval from $97709.0$ to $106928.7$ cubic feet. My work is shown below.
+
+\begin{singlespace}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{n} \hlkwb{<-} \hlnum{31}
+\hlstd{N} \hlkwb{<-} \hlnum{2967}
+\hlstd{ybar} \hlkwb{<-} \hlkwd{mean}\hlstd{(cherry}\hlopt{$}\hlstd{volume)}
+\hlstd{xbard} \hlkwb{<-} \hlkwd{mean}\hlstd{(cherry}\hlopt{$}\hlstd{diameter)}
+\hlstd{txd} \hlkwb{<-} \hlnum{41835}
+\hlstd{thaty1} \hlkwb{<-} \hlstd{N} \hlopt{*} \hlstd{ybar} \hlopt{+} \hlkwd{coef}\hlstd{(lm.1)[}\hlnum{2}\hlstd{]} \hlopt{*} \hlstd{(txd} \hlopt{-} \hlstd{N} \hlopt{*} \hlstd{xbard)}
+\hlstd{c} \hlkwb{<-} \hlstd{N} \hlopt{*} \hlstd{(N} \hlopt{-} \hlstd{n)} \hlopt{/} \hlstd{n}
+\hlstd{mse1} \hlkwb{<-} \hlkwd{anova}\hlstd{(lm.1)[}\hlnum{2}\hlstd{,} \hlnum{3}\hlstd{]}
+\hlstd{var.that.y1} \hlkwb{<-} \hlstd{c} \hlopt{*} \hlstd{mse1}
+\hlstd{tstar} \hlkwb{<-} \hlkwd{qt}\hlstd{(}\hlnum{0.975}\hlstd{,} \hlnum{29}\hlstd{)}
+\hlstd{ci1} \hlkwb{<-} \hlkwd{c}\hlstd{(thaty1} \hlopt{-} \hlstd{tstar} \hlopt{*} \hlkwd{sqrt}\hlstd{(var.that.y1), thaty1} \hlopt{+} \hlstd{tstar} \hlopt{*} \hlkwd{sqrt}\hlstd{(var.that.y1))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{singlespace}
+
+Using the third regression model, the total volume for all black cherry trees in the forest is estimated to be $52884.3$ cubic feet, with a $95\%$ confidence interval from $38359.7$ to $67408.9$ cubic feet. My work is shown below.
+
+\begin{singlespace}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{xbarh} \hlkwb{<-} \hlkwd{mean}\hlstd{(cherry}\hlopt{$}\hlstd{height)}
+\hlstd{txh} \hlkwb{<-} \hlnum{201756}
+\hlstd{thaty2} \hlkwb{<-} \hlstd{N} \hlopt{*} \hlstd{ybar} \hlopt{+} \hlkwd{coef}\hlstd{(lm.2)[}\hlnum{2}\hlstd{]} \hlopt{*} \hlstd{(txh} \hlopt{-} \hlstd{N} \hlopt{*} \hlstd{xbarh)}
+\hlstd{mse2} \hlkwb{<-} \hlkwd{anova}\hlstd{(lm.2)[}\hlnum{2}\hlstd{,} \hlnum{3}\hlstd{]}
+\hlstd{var.that.y2} \hlkwb{<-} \hlstd{c} \hlopt{*} \hlstd{mse2}
+\hlstd{ci2} \hlkwb{<-} \hlkwd{c}\hlstd{(thaty2} \hlopt{-} \hlstd{tstar} \hlopt{*} \hlkwd{sqrt}\hlstd{(var.that.y2), thaty2} \hlopt{+} \hlstd{tstar} \hlopt{*} \hlkwd{sqrt}\hlstd{(var.that.y2))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{singlespace}
+
+Using the third regression model, the total volume for all black cherry trees in the forest is estimated to be $93362.5$ cubic feet, with a $95\%$ confidence interval from $89153.9$ to $97571.1$ cubic feet. My work is shown below.
+
+\begin{singlespace}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{thaty3} \hlkwb{<-} \hlstd{N} \hlopt{*} \hlstd{ybar} \hlopt{+} \hlkwd{coef}\hlstd{(lm.3)[}\hlnum{2}\hlstd{]} \hlopt{*} \hlstd{(txd} \hlopt{-} \hlstd{N} \hlopt{*} \hlstd{xbard)} \hlopt{+}
+                    \hlkwd{coef}\hlstd{(lm.3)[}\hlnum{3}\hlstd{]} \hlopt{*} \hlstd{(txh} \hlopt{-} \hlstd{N} \hlopt{*} \hlstd{xbarh)}
+\hlstd{mse3} \hlkwb{<-} \hlkwd{anova}\hlstd{(lm.3)[}\hlnum{3}\hlstd{,} \hlnum{3}\hlstd{]}
+\hlstd{var.that.y3} \hlkwb{<-} \hlstd{c} \hlopt{*} \hlstd{mse3}
+\hlstd{ci3} \hlkwb{<-} \hlkwd{c}\hlstd{(thaty3} \hlopt{-} \hlstd{tstar} \hlopt{*} \hlkwd{sqrt}\hlstd{(var.that.y3), thaty3} \hlopt{+} \hlstd{tstar} \hlopt{*} \hlkwd{sqrt}\hlstd{(var.that.y3))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{singlespace}
+
+\item I prefer model $1$ because the proportion of the variability in tree volume explained by the regression on diameter is estimated to be $0.9353$, while the proportion of the variability in tree volume explained by the regression on height is only $0.3579$. As a result, the confidence interval for the total tree volume obtained from model $1$ is narrower than the confidence interval obtained from model $2$. 
+
+\item There is evidence that including both variables provides an improved model for estimating the total volume. There is strong evidence that model $3$ is an improvement over model $1$ (p-value $= 0.014$ from extra-sums-of-squares F-stat $= 6.79$ on $1$ and $28$ df). I also noticed that the adjusted $R^2$ for model $3$ is larger than the adjusted $R^2$ for model $1$. As a result, the confidence interval for the true total tree volume is narrower for model $3$.
+
+\begin{singlespace}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{anova}\hlstd{(lm.1, lm.3)}
+\end{alltt}
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Model 1: volume ~ diameter
+## Model 2: volume ~ diameter + height
+##   Res.Df RSS Df Sum of Sq    F Pr(>F)
+## 1     29 524                         
+## 2     28 422  1       102 6.79  0.014
+\end{verbatim}
+\begin{alltt}
+\hlstd{ci3[}\hlnum{2}\hlstd{]}\hlopt{-}\hlstd{ci3[}\hlnum{1}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+## diameter 
+##     8417
+\end{verbatim}
+\begin{alltt}
+\hlstd{ci1[}\hlnum{2}\hlstd{]}\hlopt{-}\hlstd{ci1[}\hlnum{1}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+## diameter 
+##     9220
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{singlespace}
+
+\item Assuming the total diameter and total height of black cherry trees in the forest is $41835$ and $201756$ inches, respectively, we are $95\%$ confident that the true total black cherry tree volume in this forest is between $89153.9$ and $97571.1$ cubic feet.
+
+\end{enumerate}
+
+
+\end{enumerate}
+
+\end{doublespacing}
+
+
+\end{document}

@@ -1,0 +1,278 @@
+\documentclass[12pt]{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+
+\usepackage{amssymb,amsmath}
+\usepackage{enumerate}
+\usepackage{float}
+\usepackage{verbatim}
+\usepackage{setspace}
+\usepackage{multicol}
+
+%% LaTeX margin settings:
+  \setlength{\textwidth}{7.0in}
+\setlength{\textheight}{9in}
+\setlength{\oddsidemargin}{-.5in}
+\setlength{\evensidemargin}{0in}
+\setlength{\topmargin}{-1.5cm}
+
+%% tell knitr to use smaller font for code chunks
+\def\fs{\footnotesize}
+\def\R{{\sf R}}
+\newcommand{\bfbeta}{\mbox{\boldmath $\beta$}}
+\newcommand{\bfD}{\mbox{\boldmath $D$}}
+\newcommand{\bfL}{\mbox{\boldmath $L$}}
+\newcommand{\bfR}{\mbox{\boldmath $R$}}
+\newcommand{\bfmu}{\mbox{\boldmath $\mu$}}
+\newcommand{\bfv}{\mbox{\boldmath $V$}}
+\newcommand{\bfX}{\mbox{\boldmath $X$}}
+\newcommand{\bfy}{\mbox{\boldmath $y$}}
+\newcommand{\bfb}{\mbox{\boldmath $b$}}
+\newcommand{\ytil}{\mbox{$\tilde{y}$}}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+  
+  
+\begin{center}
+\large{Sampling: HW4} \\
+Leslie Gains-Germain
+\end{center}
+
+\begin{doublespacing}
+
+\begin{enumerate}
+
+\item \begin{enumerate}
+
+\item $\bar{y}_{1U} = 3.5$ and $\bar{y}_{2U} = 7.75$
+
+
+
+\item $S_1^2 = 3.0$ and $S_2^2 = 7.5833$
+
+\item $V(\hat{t}_1) = 4(4-3)3.0/3 = 4$ and $V(\hat{t}_1) = 4(4-3)7.5833/3 = 10.1111$
+
+\item $V(\hat{t}_{STR}) = 14.1111$ and $V(\bar{y}_{U_{STR}}) = \frac{14.1111}{8^2} = 0.2205$ 
+
+\item The possible simple random samples in each stratum are shown below. The units selected (not the y-values) are displayed.
+\begin{table}[H]
+\centering
+\begin{tabular}{c|c|c|c}
+Stratum $1$ &  $\hat{t}_1$ & Stratum $2$ & $\hat{t}_2$ \\
+\hline
+{1, 2, 3} & 12 & {5, 6, 7} & 26.6667 \\
+{1, 3, 4} & 13.3333 & {5, 7, 8} & 33.3333 \\
+{1, 2, 4} & 13.3333 & {5, 6, 8} & 29.3333 \\
+{2, 3, 4} & 17.3333 & {6, 7, 8} & 34.6667 \\
+\hline
+\end{tabular}
+\end{table}
+
+The values of $\hat{t}$ for each stratified sample are shown in the table below.
+\begin{table}[H]
+\centering
+\begin{tabular}{c|c|c}
+Stratum $1$ & Stratum $2$ & $\hat{t}$ \\
+\hline
+{1, 2, 3} & {5, 6, 7} & 38.6667 \\
+{1, 2, 3} & {5, 7, 8} & 45.3333 \\
+{1, 2, 3} & {5, 6, 8} & 41.3333 \\
+{1, 2, 3} & {6, 7, 8} & 46.6667 \\
+{1, 3, 4} & {5, 6, 7} & 40 \\
+{1, 3, 4} & {5, 7, 8} & 46.6666 \\
+{1, 3, 4} & {5, 6, 8} & 42.6666 \\
+{1, 3, 4} & {6, 7, 8} & 48 \\
+{1, 2, 4} & {5, 6, 7} & 40 \\
+{1, 2, 4} & {5, 6, 8} & 46.6666 \\
+{1, 2, 4} & {6, 7, 8} & 42.6666 \\
+{1, 2, 4} & {6, 7, 8} & 48 \\
+{2, 3, 4} & {5, 6, 7} & 44 \\
+{2, 3, 4} & {5, 7, 8} & 50.6666 \\
+{2, 3, 4} & {5, 6, 8} & 46.6666 \\
+{2, 3, 4} & {6, 7, 8} & 52 \\
+\hline
+\end{tabular}
+\end{table}
+
+
+\item The sampling distribution of $\hat{t}$ is shown in the table below.
+\begin{table}[H]
+\centering
+\begin{tabular}{c|c}
+$\hat{t}$ & Probability \\
+\hline
+38.6667 & 1/16 \\
+45.3333 & 1/16 \\
+41.3333 & 1/16 \\
+46.6667 & 1/4 \\
+40 & 1/8 \\
+42.6667 & 1/8 \\
+48 & 1/8 \\
+44 & 1/16 \\
+50.6667 & 1/16 \\
+52 & 1/16 \\
+\hline
+\end{tabular}
+\end{table}
+
+\item The expected value of $\hat{t}$ is $E[\hat{t}] = 38.67(1/16)+45.33(1/16)+41.33(1/16)+46.67(1/4)+40(1/8)+42.67(1/8)+48(1/8)+44(1/16)+50.67(1/16)+52(1/16) = 45$. The true population total is $45$, so $\hat{t}$ is unbiased. 
+
+\end{enumerate}
+
+\item I would sample $504$ houses, $324$ apartments, and $72$ condiminiums. My work is shown in the R code below.
+
+\begin{singlespace}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlnum{35000}\hlopt{+}\hlnum{45000}\hlopt{/}\hlnum{2}\hlopt{+}\hlnum{10000}\hlopt{/}\hlnum{2}
+\hlcom{#62500}
+\hlnum{900}\hlopt{*}\hlnum{22500}\hlopt{/}\hlnum{62500}
+\hlcom{#324}
+\hlnum{900}\hlopt{*}\hlnum{5000}\hlopt{/}\hlnum{62500}
+\hlcom{#72}
+\hlnum{900}\hlopt{*}\hlnum{35000}\hlopt{/}\hlnum{62500}
+\hlcom{#504}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{singlespace}
+
+
+\item The total number of breathing holes found in the sample are shown in the following table for each zone. Using the formula for $\hat{t}$, we find that $\hat{t} = 68/17(30)+84/12(53)+48/11(116) = 997.18$. Since holes is a whole number, the total number of holes in the study region is estimated to be $997$. 
+
+% latex table generated in R 3.2.2 by xtable 1.7-4 package
+% Fri Oct  2 13:22:03 2015
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrr}
+  \hline
+ & zone & sum(holes) & var(holes) \\ 
+  \hline
+1 & 1 &  30 & 3.32 \\ 
+  2 & 2 &  53 & 11.54 \\ 
+  3 & 3 & 116 & 46.07 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+The variance of the $\hat{t}$ is estimated to be $\widehat{V(\hat{t})} = 68(68-17)3.3162/17 + 84(84-12)11.5379/12 + 48(48-11)46.0727/11 = 13930.25$, and the standard error of $\hat{t}$ is $\sqrt{13930.25} = 118.03$. A $95\%$ confidence interval for the true population total, $t$, is $[758, 1237]$. We are $95\%$ confident that the true total number of breathing holes in the study region is between $758$ and $1237$.
+
+\item I would sample $8$ counties from the Northeast region, $69$ counties from  the Northcentral region, $122$ counties from the South, and $101$ counties from the West. My work is shown below.
+
+\begin{singlespace}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{sqrt}\hlstd{(}\hlnum{7647472708}\hlstd{)}
+\hlkwd{sqrt}\hlstd{(}\hlnum{29618183543}\hlstd{)}
+\hlkwd{sqrt}\hlstd{(}\hlnum{53587487856}\hlstd{)}
+\hlkwd{sqrt}\hlstd{(}\hlnum{396185950266}\hlstd{)}
+\hlnum{220}\hlopt{*}\hlnum{87449.83}\hlopt{+}\hlnum{1054}\hlopt{*}\hlnum{172099.3}\hlopt{+}\hlnum{1382}\hlopt{*}\hlnum{231489.7}\hlopt{+}\hlnum{422}\hlopt{*}\hlnum{629433}
+\hlcom{#786171116}
+\hlnum{300}\hlopt{*}\hlnum{220}\hlopt{*}\hlnum{87449.83}\hlopt{/}\hlnum{786171116}
+\hlcom{#7.34}
+\hlnum{300}\hlopt{*}\hlnum{1054}\hlopt{*}\hlnum{172099.3}\hlopt{/}\hlnum{786171116}
+\hlcom{#69.22}
+\hlnum{300}\hlopt{*}\hlnum{1382}\hlopt{*}\hlnum{231489.7}\hlopt{/}\hlnum{786171116}
+\hlcom{#122.08}
+\hlnum{300}\hlopt{*}\hlnum{422}\hlopt{*}\hlnum{629433}\hlopt{/}\hlnum{786171116}
+\hlcom{#101.36}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{singlespace}
+
+\item The total number of otter dens found in the sample are shown for each terrain type in the following table. Using the formula for $\hat{t}$, we find that $\hat{t} = 89/19*33+61/20*35+40/22*292+47/21*86 = 984.71$. We round up, and the estimate for the total number of otter dens along the coastline of Shetland, UK is $985$. 
+
+% latex table generated in R 3.2.2 by xtable 1.7-4 package
+% Fri Oct  2 13:22:04 2015
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrr}
+  \hline
+ & terrain & sum(dens) & var(dens) \\ 
+  \hline
+1 &   1 &  33 & 5.43 \\ 
+  2 &   2 &  35 & 6.83 \\ 
+  3 &   3 & 292 & 58.78 \\ 
+  4 &   4 &  86 & 15.59 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+The variance of the $\hat{t}$ is estimated to be $\widehat{V(\hat{t})} = 89*(89-19)*5.4269/19 + 61*(61-20)*6.8289/20 + 40*(40-22)*58.7792/22 + 47*(47-21)*15.5905/21 = 5464.31$, and the standard error of $\hat{t}$ is $\sqrt{5464.31} = 73.92$. A $95\%$ confidence interval for the true population total, $t$, is $[837, 1132]$. We are $95\%$ confident that the true total number of otter dens along the $1400$ km coastline of Shetland, UK is between $837$ and $1132$.
+
+\item The population I came up with is given below:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{c|c}
+Stratum $1$ $y$-value & Stratum $2$ $y$-value \\
+\hline
+1 & 1.5 \\
+2 & 2.5 \\
+3 & 3.5 \\
+\hline
+\end{tabular}
+\end{table}
+
+\noindent $\bar{y}_{1U} = 2$, $\bar{y}_{2U} = 2.5$, and $\bar{y}_U = 2.25$. Then $SSB = 3(0.25^2+0.25^2) = 0.375$ and $\sum_{h=1}^H(1-N_H/N)s_h^2 = .5*1+.5*1=1$. Since $0.375 < 1$, this is an example where $V(\hat{t}_{STR})$ is larger using proportional allocation than what it would be from a SRS with the same number of observations. I think the main message here is that there is no benefit of proportional allocation if the between strata variance is small and the strata are similar to eachother.
+
+\end{enumerate}
+
+\end{doublespacing}
+
+
+\end{document}
