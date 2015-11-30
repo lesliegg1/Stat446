@@ -1,0 +1,87 @@
+obs  type   greenfee yardage
+
+ 1  private   35.00   6453
+ 2  private   45.00   6549
+ 3  private   45.00   6766
+ 4  private   40.00   6589
+ 5  private   50.00   6767
+ 6  private   22.00   6326
+ 7  private   35.00   5985
+ 8  private   40.00   6537
+ 9  private   40.00   6301
+10  private   18.00   5614
+11  private   14.00   5876
+12  private   35.00   6261
+13  private   75.00   6933
+14  private   50.00   6710
+15  private   40.00   6485
+16  private  101.00   7113
+17  private   60.00   6670
+18  private   25.00   6801
+19  private   75.00   6828
+20  private   30.00   6728
+21  private   50.00   6561
+22  private   25.00   6385
+23  private   27.00   6052
+24  private   35.00   6716
+25  private   35.00   6281
+26  private   26.00   6423
+27  private   80.00   6876
+28  private   60.00   6774
+29  private   40.00   6771
+30  private   75.00   6987
+31  private   90.00   6970
+32  private   25.00   6251
+33  private   55.70   6509
+34  private  100.00   6827
+35  private   35.00   6262
+36  private   50.00   6558
+37  private   25.00   6199
+38  private   50.00   6257
+39  private   25.00   6292
+40  private   17.00   6072
+41  private   60.00   6579
+42  private   26.00   6280
+43  private   50.00   6515
+44  private   36.00   6849
+45  private   23.00   6431
+46  private   30.00   6592
+47  private   22.00   6154
+48  private   40.00   6279
+49  private   50.00   6737
+50  public    35.00   6706
+51  public    33.00   7002
+52  public    32.00   7005
+53  public    32.00   6355
+54  public    27.00   6494
+55  public    22.50   6107
+56  public    20.00   5971
+57  public    35.50   6956
+58  public    22.00   6061
+59  public    35.00   6982
+60  public    21.00   6539
+61  public    35.00   7112
+62  public    44.00   7028
+63  public    32.50   7072
+64  public    33.00   6335
+65  public    34.25   7010
+66  public    38.00   6348
+67  public    18.00   5714
+68  public    31.00   6819
+69  public    17.00   6245
+70  public    23.00   5850
+71  public    30.00   6469
+72  public    18.00   5295
+73  public    24.00   6356
+74  public    23.00   6003
+75  public    38.00   6616
+76  public    35.00   6624
+77  public    26.00   6525
+78  public    17.00   6097
+79  public    15.00   5718
+80  public    17.00   5542
+81  public    24.00   6506
+82  public    14.00   5485
+83  public    18.00   6238
+84  public    40.00   6234
+85  public    27.00   6595
