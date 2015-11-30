@@ -187,6 +187,8 @@ pi.10 <- read.csv("pi10.csv")
 pi.20 <- read.csv("pi20.csv")
 pi.30 <- read.csv("pi30.csv")
 pi.40 <- read.csv("pi40.csv")
+
+reach.dat <- cbind(reach.dat, "pi.10" = pi.10$x, "pi.20" = pi.20$x, "pi.30" = pi.30$x, "pi.40" = pi.40$x)
 @
 
 
@@ -241,28 +243,37 @@ ht.fun <- function(simnum, sample.n, pi.n){
     mutate(mean = total/size)
   return(ht.strata[, "mean"])
 }
+@
 
+<<htcall, echo=FALSE, eval=FALSE>>=
 ####Note - the below may take a long time to run. You may want to run them once and then use the write.csv() function to write them to a csv and then just call the csv each time you run this document
 
 #apply to every one of the nsim samples (for n.10)
 ht.means.10 <- data.frame(apply(cbind(1:nsim), 1, ht.fun, sample.n = sample.10, 
-                                pi.n = pi.10))
+                                pi.n = pi.10$x))
 
 #20% sample size
 ht.means.20 <- data.frame(apply(cbind(1:nsim), 1, ht.fun, sample.n = sample.20, 
-                                pi.n = pi.20))
+                                pi.n = pi.20$x))
 
 #30% sample size
 ht.means.30 <- data.frame(apply(cbind(1:nsim), 1, ht.fun, sample.n = sample.30, 
-                                pi.n = pi.30))
+                                pi.n = pi.30$x))
 
 #40\% sample size
 ht.means.40 <- data.frame(apply(cbind(1:nsim), 1, ht.fun, sample.n = sample.40, 
-                                pi.n = pi.40))
+                                pi.n = pi.40$x))
 
 #or you can do it with HTstrata function
 #I wanted to use this but couldn't figure out how to store the descriptive output
 #cat(HTstrata(y = y, pik = pi, strata = stream.strata, description = TRUE))
+@
+
+<<htcsvs, echo=FALSE>>=
+ht.means.10 <- read.csv("ht.means.10")
+ht.means.20 <- read.csv("ht.means.20")
+ht.means.30 <- read.csv("ht.means.30")
+ht.means.40 <- read.csv("ht.means.40")
 @
 
 
